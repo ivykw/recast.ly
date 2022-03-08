@@ -2,15 +2,40 @@ import exampleVideoData from '../data/exampleVideoData.js';
 import VideoList from './VideoList.js';
 import VideoListEntry from './VideoListEntry.js';
 import VideoPlayer from './VideoPlayer.js';
+import Search from './Search.js';
+import searchYoutube from '../lib/searchYoutube.js';
 
 class App extends React.Component {
   constructor ( props ) {
     super ( props );
 
     this.state = {
-      allVideos: exampleVideoData,
-      currentVideo: exampleVideoData[0]
+      allVideos: [], // data
+      currentVideo: {}, // data[0]
+      searchQuery: ''
     };
+  }
+
+  onTitleClick(event, video) {
+    this.setState({
+      currentVideo: video
+    });
+  }
+
+  onSubmitClick(event, input) {
+    this.setState({
+      searchQuery: input
+    });
+  }
+
+  componentDidMount( props ) {
+    console.log(searchYoutube);
+    searchYoutube('cat', (data) => {
+      this.setState({
+        allVideos: data,
+        currentVideo: data[0]
+      });
+    });
   }
 
   render() {
@@ -18,7 +43,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <div><h5><em>search</em> view goes here</h5></div>
+            <Search query = { this.state.searchQuery }/>
           </div>
         </nav>
         <div className="row">
@@ -27,7 +52,7 @@ class App extends React.Component {
           </div>
           <div className="col-md-5">
             <div>
-              <VideoList videos = { this.state.allVideos }/>
+              <VideoList videos = { this.state.allVideos } videoClick = { this.onTitleClick.bind(this) } />
             </div>
           </div>
         </div>
