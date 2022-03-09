@@ -14,6 +14,8 @@ class App extends React.Component {
       currentVideo: {}, // data[0]
       searchQuery: ''
     };
+
+    this.onInputChange('react');
   }
 
   onTitleClick(event, video) {
@@ -28,12 +30,12 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount( props ) {
-    console.log(searchYoutube);
-    searchYoutube('cat', (data) => {
+  onInputChange(input) {
+    searchYoutube(input, (data) => {
       this.setState({
         allVideos: data,
-        currentVideo: data[0]
+        currentVideo: data[0],
+        searchQuery: input
       });
     });
   }
@@ -43,7 +45,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search query = { this.state.searchQuery }/>
+            <Search inputChange = { this.onInputChange.bind(this) }/>
           </div>
         </nav>
         <div className="row">
@@ -65,20 +67,3 @@ class App extends React.Component {
 // `var` declarations will only exist globally where explicitly defined
 export default App;
 
-// var App = () => (
-//   <div>
-//     <nav className="navbar">
-//       <div className="col-md-6 offset-md-3">
-//         <div><h5><em>search</em> view goes here</h5></div>
-//       </div>
-//     </nav>
-//     <div className="row">
-//       <div className="col-md-7">
-//         <div><h5><em>videoPlayer</em> view goes here</h5></div>
-//       </div>
-//       <div className="col-md-5">
-//         <div><h5><em>videoList</em> view goes here</h5></div>
-//       </div>
-//     </div>
-//   </div>
-// );
